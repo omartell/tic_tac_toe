@@ -36,11 +36,29 @@ module TicTacToe
       ask_player :a
     end
 
+    it "shows the winner when one player takes the whole column" do
+      a = ["0,0", "1,0", "1,1"]
+      b = ["2,0", "2,1", "2,2"]
+      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2])
+      io.stub(:puts)
+      io.should_receive(:puts).with("Winner is player b")
+
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+    end
+
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       moves[player] << io.gets
       if moves[player] == ["0,0", "0,1", "0,2"]
         io.puts("Winner is player a")
+      end
+      if moves[player] == ["2,0", "2,1", "2,2"]
+        io.puts("Winner is player b")
       end
     end
   end
