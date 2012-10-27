@@ -84,6 +84,8 @@ module TicTacToe
       io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
       io.stub(:puts)
       io.should_receive(:puts).with("No winners this time!")
+      io.should_not_receive(:puts).with("Winner is player a")
+      io.should_not_receive(:puts).with("Winner is player b")
 
       ask_player :a
       ask_player :b
@@ -113,7 +115,7 @@ module TicTacToe
       add_move(player, move)
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(player)
-      io.puts("No winners this time!")
+      io.puts("No winners this time!") if moves.values.flatten.size == 9
     end
 
     def add_move(player, move)
@@ -137,7 +139,7 @@ module TicTacToe
       ys = ys(player)
       xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3 ||
       ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3 ||
-      ys.inject(:+) == 3 && xs.inject(:+) == 3
+      ys.inject(:+) == 3 && xs.inject(:+) == 3 && xs.size == 3
     end
 
     def has_the_square_been_taken?(move)
