@@ -84,8 +84,7 @@ module TicTacToe
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
-      user_input = io.gets
-      move = Move.new *user_input.split(",").map(&:to_i)
+      move = parse_input(io.gets)
 
       if has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
@@ -94,6 +93,10 @@ module TicTacToe
       moves[player] << move
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(player)
+    end
+
+    def parse_input(user_input)
+      Move.new *user_input.split(",").map(&:to_i)
     end
 
     def xs(player)
