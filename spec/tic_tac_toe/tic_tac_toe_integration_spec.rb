@@ -90,9 +90,13 @@ module TicTacToe
         return io.puts("That square has been already taken, please do another movement")
       end
 
-      moves[player] << move
+      add_move(player, move)
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(player)
+    end
+
+    def add_move(player, move)
+      moves[player] << move
     end
 
     def parse_input(user_input)
