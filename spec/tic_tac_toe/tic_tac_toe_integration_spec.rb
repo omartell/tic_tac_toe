@@ -75,14 +75,18 @@ module TicTacToe
       ask_player :b
     end
 
-    Move = Struct.new(:x, :y)
+    Move = Struct.new(:x, :y) do
+      def eql?(other)
+        other.x == self.x && other.y == self.y
+      end
+    end
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       user_input = io.gets || ""
       move = Move.new *user_input.split(",").map(&:to_i)
 
-      if moves.values.flatten.any?{ |m| m.x == move.x && m.y == move.y }
+      if moves.values.flatten.any?{|m| m==move }
         return io.puts("That square has been already taken, please do another movement")
       end
 
