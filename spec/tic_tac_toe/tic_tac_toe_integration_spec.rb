@@ -8,12 +8,14 @@ module TicTacToe
 
     it "asks for player's a first move" do
       io.stub(:gets).and_return("0,0")
+      io.stub(:puts)
       io.should_receive(:puts).with("Player a:")
       io.should_receive(:gets)
       ask_player :a
     end
 
     it "asks for player's b move after player a" do
+      io.stub(:puts)
       io.should_receive(:puts).with("Player a:").ordered
       io.should_receive(:gets).ordered.and_return("1,1")
       io.should_receive(:puts).with("Player b:").ordered
@@ -77,7 +79,6 @@ module TicTacToe
     end
 
     it "ends the game if there are no more squares to take" do
-      pending
       a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       b = ["1,1", "2,0", "0,1", "2,2"]
       io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
@@ -112,6 +113,7 @@ module TicTacToe
       add_move(player, move)
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(player)
+      io.puts("No winners this time!")
     end
 
     def add_move(player, move)
