@@ -69,6 +69,23 @@ module TicTacToe
       ask_player :b
     end
 
+    it "shows the winner for more sophisticated diagonals" do
+      a = ["0,0", "0,2", "1,1", "2,0"]
+      b = ["0,1", "2,1", "2,2"]
+
+      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3])
+      io.stub(:puts)
+      io.should_receive(:puts).with("Winner is player a")
+
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+    end
+
     it "doesn't allow players to do a move that belongs to another player" do
       io.stub(:gets).and_return("0,1","0,1")
       io.stub(:puts)
@@ -139,7 +156,8 @@ module TicTacToe
       ys = ys(player)
       xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3 ||
       ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3 ||
-      ys.inject(:+) == 3 && xs.inject(:+) == 3 && xs.size == 3
+      (moves[player] & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
+      (moves[player] & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
     end
 
     def has_the_square_been_taken?(move)
