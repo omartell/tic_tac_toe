@@ -154,8 +154,18 @@ module TicTacToe
     def has_won?(player)
       xs = xs(player)
       ys = ys(player)
-      xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3 ||
-      ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3 ||
+      match_row?(xs, ys)|| match_column?(xs, ys) || match_diagonal?(player)
+    end
+
+    def match_row?(xs, ys)
+      xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3
+    end
+
+    def match_column?(xs, ys)
+      ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3
+    end
+
+    def match_diagonal?(player)
       (moves[player] & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
       (moves[player] & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
     end
