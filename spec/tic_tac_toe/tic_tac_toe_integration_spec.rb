@@ -66,14 +66,16 @@ module TicTacToe
       ask_player :b
     end
 
+    Move = Struct.new(:x, :y)
+
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       user_input = io.gets || ""
-      move = user_input.split(",")
+      move = Move.new *user_input.split(",").map(&:to_i)
       moves[player] << move
 
-      xs = moves[player].map(&:first).map(&:to_i)
-      ys = moves[player].map(&:last).map(&:to_i)
+      xs = moves[player].map(&:x)
+      ys = moves[player].map(&:y)
 
       if xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3
         io.puts("Winner is player b")
