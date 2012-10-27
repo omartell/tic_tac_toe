@@ -71,13 +71,19 @@ module TicTacToe
       user_input = io.gets || ""
       move = user_input.split(",")
       moves[player] << move
-      if moves[player] == [['0','0'], ['1','0'], ['2','0']]
-        io.puts("Winner is player a")
-      end
-      if moves[player] == [['2','0'], ['2','1'], ['2','2']]
+
+      xs = moves[player].map(&:first).map(&:to_i)
+      ys = moves[player].map(&:last).map(&:to_i)
+
+      if xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3
         io.puts("Winner is player b")
       end
-      if moves[player] == [['2','0'], ['1','1'], ['0','2']]
+
+      if ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3
+        io.puts("Winner is player a")
+      end
+
+      if ys.inject(:+) == 3 && xs.inject(:+) == 3
         io.puts("Winner is player b")
       end
     end
