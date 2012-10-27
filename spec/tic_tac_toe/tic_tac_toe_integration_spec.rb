@@ -86,7 +86,7 @@ module TicTacToe
       user_input = io.gets || ""
       move = Move.new *user_input.split(",").map(&:to_i)
 
-      if moves.values.flatten.any?{|m| m==move }
+      if has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
       end
 
@@ -106,6 +106,10 @@ module TicTacToe
       if ys.inject(:+) == 3 && xs.inject(:+) == 3
         io.puts("Winner is player b")
       end
+    end
+
+    def has_the_square_been_taken?(move)
+      moves.values.flatten.any?{|m| m==move }
     end
   end
 end
