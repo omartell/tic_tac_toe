@@ -91,21 +91,16 @@ module TicTacToe
       end
 
       moves[player] << move
-
       xs = moves[player].map(&:x)
       ys = moves[player].map(&:y)
 
-      if xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3
-        io.puts("Winner is player b")
-      end
+      io.puts ("Winner is player #{player.to_s}") if has_won?(player, xs, ys)
+    end
 
-      if ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3
-        io.puts("Winner is player a")
-      end
-
-      if ys.inject(:+) == 3 && xs.inject(:+) == 3
-        io.puts("Winner is player b")
-      end
+    def has_won?(player, xs, ys)
+      xs.all?{ |x| x == xs.first } && ys.inject(:+) == 3 ||
+      ys.all?{ |y| y == ys.first } && xs.inject(:+) == 3 ||
+      ys.inject(:+) == 3 && xs.inject(:+) == 3
     end
 
     def has_the_square_been_taken?(move)
