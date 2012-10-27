@@ -68,14 +68,16 @@ module TicTacToe
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
-      moves[player] << io.gets
-      if moves[player] == ["0,0", "0,1", "0,2"]
+      user_input = io.gets || ""
+      move = user_input.split(",")
+      moves[player] << move
+      if moves[player] == [['0','0'], ['0','1'], ['0','2']]
         io.puts("Winner is player a")
       end
-      if moves[player] == ["2,0", "2,1", "2,2"]
+      if moves[player] == [['2','0'], ['2','1'], ['2','2']]
         io.puts("Winner is player b")
       end
-      if moves[player] == ["2,0", "1,1", "0,2"]
+      if moves[player] == [['2','0'], ['1','1'], ['0','2']]
         io.puts("Winner is player b")
       end
     end
