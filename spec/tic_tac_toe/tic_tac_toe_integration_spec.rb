@@ -7,6 +7,7 @@ module TicTacToe
     let(:moves){ { a: [], b: [] } }
 
     it "asks for player's a first move" do
+      io.stub(:gets).and_return("0,0")
       io.should_receive(:puts).with("Player a:")
       io.should_receive(:gets)
       ask_player :a
@@ -83,7 +84,7 @@ module TicTacToe
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
-      user_input = io.gets || ""
+      user_input = io.gets
       move = Move.new *user_input.split(",").map(&:to_i)
 
       if has_the_square_been_taken?(move)
