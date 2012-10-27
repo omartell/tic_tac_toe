@@ -23,8 +23,8 @@ module TicTacToe
     end
 
     it "shows the winner when one player takes the whole row" do
-      a = ["0,0", "0,1", "0,2"]
-      b = ["1,0", "1,1"]
+      a = ["0,0", "1,0", "2,0"]
+      b = ["0,1", "1,1"]
       io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2])
       io.stub(:puts)
       io.should_receive(:puts).with("Winner is player a")
@@ -71,7 +71,7 @@ module TicTacToe
       user_input = io.gets || ""
       move = user_input.split(",")
       moves[player] << move
-      if moves[player] == [['0','0'], ['0','1'], ['0','2']]
+      if moves[player] == [['0','0'], ['1','0'], ['2','0']]
         io.puts("Winner is player a")
       end
       if moves[player] == [['2','0'], ['2','1'], ['2','2']]
