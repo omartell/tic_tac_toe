@@ -14,9 +14,9 @@ module TicTacToe
 
     it "asks for player's b move after player a" do
       io.should_receive(:puts).with("Player a:").ordered
-      io.should_receive(:gets).ordered
+      io.should_receive(:gets).ordered.and_return("1,1")
       io.should_receive(:puts).with("Player b:").ordered
-      io.should_receive(:gets).ordered
+      io.should_receive(:gets).ordered.and_return("2,2")
 
       ask_player :a
       ask_player :b
