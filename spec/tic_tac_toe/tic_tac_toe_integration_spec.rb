@@ -76,6 +76,25 @@ module TicTacToe
       ask_player :b
     end
 
+    it "ends the game if there are no more squares to take" do
+      pending
+      a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
+      b = ["1,1", "2,0", "0,1", "2,2"]
+      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
+      io.stub(:puts)
+      io.should_receive(:puts).with("No winners this time!")
+
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+      ask_player :b
+      ask_player :a
+    end
+
     Move = Struct.new(:x, :y) do
       def eql?(other)
         other.x == self.x && other.y == self.y
