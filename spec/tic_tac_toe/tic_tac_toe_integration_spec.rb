@@ -174,10 +174,16 @@ module TicTacToe
       def all_squares_taken?
         all_moves.size == 9
       end
-    end
 
-    def players
-      engine.players
+      def find_or_initialize_player(name)
+        gamer = find_player(name) || Player.new(name)
+        players << gamer unless find_player(name)
+        gamer
+      end
+
+      def find_player(name)
+        players.find{|p| p.name == name }
+      end
     end
 
     let(:engine){ TicTacToeEngine.new }
@@ -185,8 +191,7 @@ module TicTacToe
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       move   = parse_input(io.gets)
-      gamer  =  find_player(player.to_s) || Player.new(player.to_s)
-      players << gamer unless find_player(player.to_s)
+      gamer  = engine.find_or_initialize_player(player.to_s) 
 
       if engine.has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
@@ -196,10 +201,6 @@ module TicTacToe
 
       io.puts ("Winner is player #{player.to_s}") if engine.has_won?(gamer)
       io.puts("No winners this time!") if engine.all_squares_taken?
-    end
-
-    def find_player(name)
-      players.find{|p| p.name == name }
     end
 
     def parse_input(user_input)
