@@ -20,15 +20,6 @@ module TicTacToe
       tic_tac_toe.set_players
     end
 
-    it "asks for player's a first move" do
-      io.stub(:gets).and_return("a","0,0")
-      io.stub(:puts)
-      io.should_receive(:puts).with("Player a:")
-      io.should_receive(:gets)
-
-      tic_tac_toe.start
-    end
-
     it "asks for player's b move after player a" do
       a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       b = ["1,1", "2,0", "0,1", "2,2"]
