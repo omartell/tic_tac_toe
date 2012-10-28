@@ -30,14 +30,18 @@ module TicTacToe
     end
 
     it "asks for player's b move after player a" do
-      io.stub(:puts)
-      io.should_receive(:puts).with("Player a:").ordered
-      io.should_receive(:gets).ordered.and_return("1,1")
-      io.should_receive(:puts).with("Player b:").ordered
-      io.should_receive(:gets).ordered.and_return("2,2")
+      a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
+      b = ["1,1", "2,0", "0,1", "2,2"]
 
-      ask_player :a
-      ask_player :b
+      io.stub(:gets).and_return("a","b",a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
+      args = []
+      io.stub(:puts) do |arg|
+        args << arg
+      end
+
+      tic_tac_toe.start
+
+      args.join(",").should include ["Player a:", "Player b:", "Player a:", "Player b:", "Player a:", "Player b:", "Player a:", "Player b:", "Player a:"].join(",")
     end
 
     it "shows the winner when one player takes the whole row" do

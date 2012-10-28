@@ -17,8 +17,15 @@ module TicTacToe
 
     def start
       set_players
-      play(@player_names.first)
-      play(@player_names.last)
+      run(@player_names.dup)
+    end
+
+    def run(players)
+      player  = players.shift
+      state   = play(player)
+      return state if state == :winner || state == :no_winner
+      players.push(player)
+      run(players)
     end
 
     def play(player)
@@ -29,6 +36,7 @@ module TicTacToe
       io.puts("That square has been already taken, please do another movement") if state == :square_taken
       io.puts ("Winner is player #{player.to_s}") if state == :winner
       io.puts("No winners this time!") if state == :no_winner
+      state
     end
 
     def parse_input(user_input)
