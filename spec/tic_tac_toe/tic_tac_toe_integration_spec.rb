@@ -140,6 +140,42 @@ module TicTacToe
       end
     end
 
+    class TicTacToeEngine
+      attr_reader :players
+      def initialize(players)
+        @players = players
+      end
+
+      def has_won?(player)
+        match_row?(player)|| match_column?(player) || match_diagonal?(player)
+      end
+
+      def match_row?(player)
+        player.xs.all?{ |x| x == player.xs.first } && player.ys.inject(:+) == 3
+      end
+
+      def match_column?(player)
+        player.ys.all?{ |y| y == player.ys.first } && player.xs.inject(:+) == 3
+      end
+
+      def match_diagonal?(player)
+        (player.moves & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
+        (player.moves & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
+      end
+
+      def all_moves
+        players.flat_map(&:moves)
+      end
+
+      def has_the_square_been_taken?(move)
+        all_moves.any?{|m| m==move }
+      end
+
+      def all_squares_taken?
+        all_moves.size == 9
+      end
+    end
+
     let(:players){ [] }
 
     def ask_player(player)
@@ -149,47 +185,22 @@ module TicTacToe
 
       players << gamer unless find_player(player.to_s)
 
-      if has_the_square_been_taken?(move)
+      if TicTacToeEngine.new(players).has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
       end
 
       gamer.add_move(move)
 
-      io.puts ("Winner is player #{player.to_s}") if has_won?(gamer)
-      io.puts("No winners this time!") if all_moves.size == 9
+      io.puts ("Winner is player #{player.to_s}") if TicTacToeEngine.new(players).has_won?(gamer)
+      io.puts("No winners this time!") if TicTacToeEngine.new(players).all_squares_taken?
     end
 
     def find_player(name)
       players.find{|p| p.name == name }
     end
 
-    def all_moves
-      players.flat_map(&:moves)
-    end
-
     def parse_input(user_input)
       Move.new *user_input.split(",").map(&:to_i)
-    end
-
-    def has_won?(player)
-      match_row?(player)|| match_column?(player) || match_diagonal?(player)
-    end
-
-    def match_row?(player)
-      player.xs.all?{ |x| x == player.xs.first } && player.ys.inject(:+) == 3
-    end
-
-    def match_column?(player)
-      player.ys.all?{ |y| y == player.ys.first } && player.xs.inject(:+) == 3
-    end
-
-    def match_diagonal?(player)
-      (player.moves & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
-      (player.moves & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
-    end
-
-    def has_the_square_been_taken?(move)
-      all_moves.any?{|m| m==move }
     end
   end
 end
