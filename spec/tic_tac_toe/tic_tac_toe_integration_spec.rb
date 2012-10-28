@@ -190,22 +190,22 @@ module TicTacToe
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
-      move   = parse_input(io.gets)
-      gamer  = engine.find_or_initialize_player(player.to_s) 
-      unless add_move(gamer, move)
-        io.puts("That square has been already taken, please do another movement")
-      end
-      io.puts ("Winner is player #{player.to_s}") if engine.has_won?(gamer)
-      io.puts("No winners this time!") if engine.all_squares_taken?
+      move = parse_input(io.gets)
+      state = move(player.to_s, move)
+
+      io.puts("That square has been already taken, please do another movement") if state == :square_taken
+      io.puts ("Winner is player #{player.to_s}") if state == :winner
+      io.puts("No winners this time!") if state == :no_winner
     end
 
-    def add_move(gamer, move)
-      if engine.has_the_square_been_taken?(move)
-        false
-      else
-        gamer.add_move(move)
-        true
-      end
+    def move(name, move)
+      gamer = engine.find_or_initialize_player(name)
+      return :square_taken if engine.has_the_square_been_taken?(move)
+      gamer.add_move(move)
+
+      state = :winner if engine.has_won?(gamer)
+      state = :no_winner if engine.all_squares_taken?
+      state
     end
 
     def parse_input(user_input)
