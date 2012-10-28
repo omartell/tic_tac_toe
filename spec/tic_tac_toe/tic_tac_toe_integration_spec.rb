@@ -38,62 +38,42 @@ module TicTacToe
     it "shows the winner when one player takes the whole row" do
       a = ["0,0", "1,0", "2,0"]
       b = ["0,1", "1,1"]
-      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2])
+      io.stub(:gets).and_return("a", "b", a[0], b[0], a[1], b[1], a[2])
       io.stub(:puts)
       io.should_receive(:puts).with("Winner is player a")
 
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
+      tic_tac_toe.start
     end
 
     it "shows the winner when one player takes the whole column" do
       a = ["0,0", "1,0", "1,1"]
       b = ["2,0", "2,1", "2,2"]
-      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2])
+      io.stub(:gets).and_return("a", "b",a[0], b[0], a[1], b[1], a[2], b[2])
       io.stub(:puts)
       io.should_receive(:puts).with("Winner is player b")
 
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
+      tic_tac_toe.start
     end
 
     it "shows the winner when one player takes the diagonal" do
       a = ["0,0", "0,1", "2,1"]
       b = ["2,0", "1,1", "0,2"]
-      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2])
+      io.stub(:gets).and_return("a", "b",a[0], b[0], a[1], b[1], a[2], b[2])
       io.stub(:puts)
       io.should_receive(:puts).with("Winner is player b")
 
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
+      tic_tac_toe.start
     end
 
     it "shows the winner for more sophisticated diagonals" do
       a = ["0,0", "0,2", "1,1", "2,0"]
       b = ["0,1", "2,1", "2,2"]
 
-      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3])
+      io.stub(:gets).and_return("a", "b",a[0], b[0], a[1], b[1], a[2], b[2], a[3])
       io.stub(:puts)
       io.should_receive(:puts).with("Winner is player a")
 
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
+      tic_tac_toe.start
     end
 
     it "doesn't allow players to do a move that belongs to another player" do
@@ -108,21 +88,13 @@ module TicTacToe
     it "ends the game if there are no more squares to take" do
       a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       b = ["1,1", "2,0", "0,1", "2,2"]
-      io.stub(:gets).and_return(a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
+      io.stub(:gets).and_return("a", "b",a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
       io.stub(:puts)
       io.should_receive(:puts).with("No winners this time!")
       io.should_not_receive(:puts).with("Winner is player a")
       io.should_not_receive(:puts).with("Winner is player b")
 
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
-      ask_player :b
-      ask_player :a
+      tic_tac_toe.start
     end
   end
 end
