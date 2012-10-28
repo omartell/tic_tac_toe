@@ -121,18 +121,44 @@ module TicTacToe
       end
     end
 
+    class Player
+      attr_reader :moves, :name
+      def initialize(name)
+        @name = name
+        @moves = []
+      end
+
+      def add_move(move)
+        @moves << move
+      end
+
+      def xs
+        @moves.map(&:x)
+      end
+
+      def ys
+        @moves.map(&:y)
+      end
+    end
+
+    let(:players){ [] }
+
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
-      move = parse_input(io.gets)
+      move   = parse_input(io.gets)
+      gamer  = players.find{|p| p.name == player.to_s } || Player.new(player.to_s)
+
+      players << gamer unless players.find{|p| p.name == gamer.name }
 
       if has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
       end
 
       add_move(player, move)
+      gamer.add_move(move)
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(player)
-      io.puts("No winners this time!") if moves.values.flatten.size == 9
+      io.puts("No winners this time!") if players.flat_map(&:moves).size == 9
     end
 
     def add_move(player, move)
