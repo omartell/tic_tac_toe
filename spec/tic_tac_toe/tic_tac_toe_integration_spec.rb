@@ -4,7 +4,6 @@ module TicTacToe
   describe "TicTacToe" do
 
     let(:io){ double(:io) }
-    let(:moves){ { a: [], b: [] } }
 
     it "asks for player's a first move" do
       io.stub(:gets).and_return("0,0")
@@ -146,9 +145,9 @@ module TicTacToe
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       move   = parse_input(io.gets)
-      gamer  = players.find{|p| p.name == player.to_s } || Player.new(player.to_s)
+      gamer  =  find_player(player.to_s) || Player.new(player.to_s)
 
-      players << gamer unless players.find{|p| p.name == gamer.name }
+      players << gamer unless find_player(player.to_s)
 
       if has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
@@ -157,7 +156,15 @@ module TicTacToe
       gamer.add_move(move)
 
       io.puts ("Winner is player #{player.to_s}") if has_won?(gamer)
-      io.puts("No winners this time!") if players.flat_map(&:moves).size == 9
+      io.puts("No winners this time!") if all_moves.size == 9
+    end
+
+    def find_player(name)
+      players.find{|p| p.name == name }
+    end
+
+    def all_moves
+      players.flat_map(&:moves)
     end
 
     def parse_input(user_input)
@@ -182,7 +189,7 @@ module TicTacToe
     end
 
     def has_the_square_been_taken?(move)
-      players.flat_map(&:moves).any?{|m| m==move }
+      all_moves.any?{|m| m==move }
     end
   end
 end
