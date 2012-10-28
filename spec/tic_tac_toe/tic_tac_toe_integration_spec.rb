@@ -192,15 +192,20 @@ module TicTacToe
       io.puts("Player #{player.to_s}:")
       move   = parse_input(io.gets)
       gamer  = engine.find_or_initialize_player(player.to_s) 
-
-      if engine.has_the_square_been_taken?(move)
-        return io.puts("That square has been already taken, please do another movement")
+      unless add_move(gamer, move)
+        io.puts("That square has been already taken, please do another movement")
       end
-
-      gamer.add_move(move)
-
       io.puts ("Winner is player #{player.to_s}") if engine.has_won?(gamer)
       io.puts("No winners this time!") if engine.all_squares_taken?
+    end
+
+    def add_move(gamer, move)
+      if engine.has_the_square_been_taken?(move)
+        false
+      else
+        gamer.add_move(move)
+        true
+      end
     end
 
     def parse_input(user_input)
