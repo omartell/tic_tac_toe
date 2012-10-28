@@ -77,12 +77,14 @@ module TicTacToe
     end
 
     it "doesn't allow players to do a move that belongs to another player" do
-      io.stub(:gets).and_return("0,1","0,1")
+      a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
+      b = ["0,0", "1,1", "2,0", "0,1", "2,2"]
       io.stub(:puts)
+      io.stub(:gets).and_return("a", "b",a[0], b[0], b[1],a[1], b[2], a[2], b[3], a[3], b[4], a[4])
       io.should_receive(:puts).with("That square has been already taken, please do another movement")
+      io.should_receive(:puts).with("No winners this time!")
 
-      ask_player :a
-      ask_player :b
+      tic_tac_toe.start
     end
 
     it "ends the game if there are no more squares to take" do
