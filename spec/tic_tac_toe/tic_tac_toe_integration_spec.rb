@@ -4,6 +4,11 @@ module TicTacToe
   describe "TicTacToe" do
 
     let(:io){ double(:io) }
+    let(:tic_tac_toe){ TicTacToe.new(io) }
+
+    def ask_player(player)
+      tic_tac_toe.play(player.to_s)
+    end
 
     it "asks for player's a first move" do
       io.stub(:gets).and_return("0,0")
@@ -112,12 +117,6 @@ module TicTacToe
       ask_player :a
       ask_player :b
       ask_player :a
-    end
-
-    let(:tic_tac_toe){ TicTacToe.new(io) }
-
-    def ask_player(player)
-      tic_tac_toe.play(player.to_s)
     end
   end
 end
