@@ -154,33 +154,18 @@ module TicTacToe
         return io.puts("That square has been already taken, please do another movement")
       end
 
-      add_move(player, move)
       gamer.add_move(move)
 
-      io.puts ("Winner is player #{player.to_s}") if has_won?(player)
+      io.puts ("Winner is player #{player.to_s}") if has_won?(gamer)
       io.puts("No winners this time!") if players.flat_map(&:moves).size == 9
-    end
-
-    def add_move(player, move)
-      moves[player] << move
     end
 
     def parse_input(user_input)
       Move.new *user_input.split(",").map(&:to_i)
     end
 
-    def xs(player)
-      moves[player].map(&:x)
-    end
-
-    def ys(player)
-      moves[player].map(&:y)
-    end
-
     def has_won?(player)
-      xs = xs(player)
-      ys = ys(player)
-      match_row?(xs, ys)|| match_column?(xs, ys) || match_diagonal?(player)
+      match_row?(player.xs, player.ys)|| match_column?(player.xs, player.ys) || match_diagonal?(player)
     end
 
     def match_row?(xs, ys)
@@ -192,8 +177,8 @@ module TicTacToe
     end
 
     def match_diagonal?(player)
-      (moves[player] & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
-      (moves[player] & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
+      (player.moves & [Move.new(0,2), Move.new(1,1), Move.new(2,0)]).size == 3 ||
+      (player.moves & [Move.new(0,0), Move.new(1,1), Move.new(2,2)]).size == 3
     end
 
     def has_the_square_been_taken?(move)
