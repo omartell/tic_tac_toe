@@ -197,7 +197,7 @@ module TicTacToe
     end
 
     def has_the_square_been_taken?(move)
-      moves.values.flatten.any?{|m| m==move }
+      players.flat_map(&:moves).any?{|m| m==move }
     end
   end
 end
