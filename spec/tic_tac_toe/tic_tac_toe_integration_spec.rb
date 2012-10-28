@@ -114,12 +114,6 @@ module TicTacToe
       ask_player :a
     end
 
-    Move = Struct.new(:x, :y) do
-      def eql?(other)
-        other.x == self.x && other.y == self.y
-      end
-    end
-
     let(:tic_tac_toe){ TicTacToe.new(io) }
 
     def ask_player(player)
