@@ -142,8 +142,8 @@ module TicTacToe
 
     class TicTacToeEngine
       attr_reader :players
-      def initialize(players)
-        @players = players
+      def initialize
+        @players = []
       end
 
       def has_won?(player)
@@ -176,23 +176,26 @@ module TicTacToe
       end
     end
 
-    let(:players){ [] }
+    def players
+      engine.players
+    end
+
+    let(:engine){ TicTacToeEngine.new }
 
     def ask_player(player)
       io.puts("Player #{player.to_s}:")
       move   = parse_input(io.gets)
       gamer  =  find_player(player.to_s) || Player.new(player.to_s)
-
       players << gamer unless find_player(player.to_s)
 
-      if TicTacToeEngine.new(players).has_the_square_been_taken?(move)
+      if engine.has_the_square_been_taken?(move)
         return io.puts("That square has been already taken, please do another movement")
       end
 
       gamer.add_move(move)
 
-      io.puts ("Winner is player #{player.to_s}") if TicTacToeEngine.new(players).has_won?(gamer)
-      io.puts("No winners this time!") if TicTacToeEngine.new(players).all_squares_taken?
+      io.puts ("Winner is player #{player.to_s}") if engine.has_won?(gamer)
+      io.puts("No winners this time!") if engine.all_squares_taken?
     end
 
     def find_player(name)
