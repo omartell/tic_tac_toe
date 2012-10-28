@@ -5,6 +5,20 @@ module TicTacToe
     def initialize(io)
       @io = io
       @engine = Engine.new
+      @player_names = []
+    end
+
+    def set_players
+      io.puts("Who's the first player?")
+      @player_names << io.gets
+      io.puts("Who's the second player?")
+      @player_names << io.gets
+    end
+
+    def start
+      set_players
+      play(@player_names.first)
+      play(@player_names.last)
     end
 
     def play(player)
