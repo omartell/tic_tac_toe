@@ -120,20 +120,10 @@ module TicTacToe
       end
     end
 
-    let(:engine){ TicTacToe::Engine.new }
+    let(:tic_tac_toe){ TicTacToe.new(io) }
 
     def ask_player(player)
-      io.puts("Player #{player.to_s}:")
-      move = parse_input(io.gets)
-      state = engine.move(player.to_s, move)
-
-      io.puts("That square has been already taken, please do another movement") if state == :square_taken
-      io.puts ("Winner is player #{player.to_s}") if state == :winner
-      io.puts("No winners this time!") if state == :no_winner
-    end
-
-    def parse_input(user_input)
-      Move.new *user_input.split(",").map(&:to_i)
+      tic_tac_toe.play(player.to_s)
     end
   end
 end
