@@ -33,7 +33,10 @@ module TicTacToe
       move = parse_input(io.gets)
       state = @engine.move(player, move)
 
-      io.puts("That square has been already taken, please do another movement") if state == :square_taken
+      if state == :square_taken
+        io.puts("That square has been already taken, please do another movement")
+        play(player)
+      end
       io.puts ("Winner is player #{player.to_s}") if state == :winner
       io.puts("No winners this time!") if state == :no_winner
       state
