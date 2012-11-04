@@ -3,7 +3,7 @@ module TicTacToe
     attr_reader :io
 
     def initialize(io)
-      @io = io
+      @io     = io
       @engine = Engine.new
       @player_names = []
     end
@@ -17,28 +17,38 @@ module TicTacToe
 
     def start
       set_players
-      run(@player_names.dup)
+      turns(@player_names.dup)
     end
 
-    def run(players)
+    private
+
+    def turns(players)
       player  = players.shift
       state   = play(player)
-      return state if state == :winner || state == :no_winner
+      return if game_over?(state)
       players.push(player)
-      run(players)
+      turns(players)
+    end
+
+    def game_over?(state)
+      state == :winner || state == :no_winner
     end
 
     def play(player)
       io.puts("Player #{player}:")
-      move = parse_input(io.gets)
+      move  = parse_input(io.gets)
       state = @engine.move(player, move)
 
       if state == :square_taken
         io.puts("That square has been already taken, please do another movement")
         play(player)
       end
-      io.puts ("Winner is player #{player.to_s}") if state == :winner
-      io.puts("No winners this time!") if state == :no_winner
+      if state == :winner
+        io.puts ("Winner is player #{player.to_s}")
+      end
+      if state == :no_winner
+        io.puts("No winners this time!")
+      end
       state
     end
 
