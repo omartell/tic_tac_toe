@@ -16,9 +16,9 @@ module TicTacToe
 
     def set_players
       @io.puts("Who's the first player?")
-      @player_names << @io.gets
+      @player_names << @io.gets.strip
       @io.puts("Who's the second player?")
-      @player_names << @io.gets
+      @player_names << @io.gets.strip
     end
 
     def turns(players)
