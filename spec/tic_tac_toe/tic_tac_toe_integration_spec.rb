@@ -3,111 +3,93 @@ require 'spec_helper'
 module TicTacToe
   describe "TicTacToe" do
 
-    let(:io){ double(:io) }
-    let(:tic_tac_toe){ TicTacToe.new(io) }
+    IO = Struct.new(:inputs) do
+      attr_reader :outputs
 
-    def moves(player_a, player_b)
-      player_a.zip(player_b).flatten
+      def puts(message)
+        @outputs ||= []
+        @outputs << message
+      end
+
+      def gets
+        inputs.shift
+      end
+    end
+
+    def io(jeff = nil, anna = nil)
+      @io ||= IO.new(["jeff", "anna", *jeff.zip(anna).flatten])
     end
 
     it "asks who's playing" do
       jeff = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       anna = ["1,1", "2,0", "0,1", "2,2"]
 
-      io.stub(:puts)
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.should_receive(:puts).with("Who's the first player?")
-      io.should_receive(:puts).with("Who's the second player?")
+      TicTacToe.new(io(jeff, anna)).start
 
-      tic_tac_toe.start
+      io.outputs.should include "Who's the first player?", "Who's the second player?"
     end
 
     it "asks for player's b move after player a" do
       jeff = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       anna = ["1,1", "2,0", "0,1", "2,2"]
 
-      io.stub(:gets).and_return("jeff","anna", *moves(jeff, anna))
-      args = []
-      io.stub(:puts) do |arg|
-        args << arg
-      end
+      TicTacToe.new(io(jeff, anna)).start
 
-      tic_tac_toe.start
-
-      args.join(",").should include [
-        "Player jeff:", 
-        "Player anna:", 
-        "Player jeff:", 
-        "Player anna:", 
-        "Player jeff:", 
-        "Player anna:", 
-        "Player jeff:", 
-        "Player anna:", 
-        "Player jeff:"].join(",")
+      io.outputs.should include "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:"
     end
 
     it "shows the winner when one player takes the whole row" do
       jeff = ["0,0", "1,0", "2,0"]
       anna = ["0,1", "1,1"]
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.stub(:puts)
-      io.should_receive(:puts).with("Winner is player jeff")
 
-      tic_tac_toe.start
+      TicTacToe.new(io(jeff, anna)).start
+
+      io.outputs.should include "Winner is player jeff"
     end
 
     it "shows the winner when one player takes the whole column" do
       jeff = ["0,0", "1,0", "1,1"]
       anna = ["2,0", "2,1", "2,2"]
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.stub(:puts)
-      io.should_receive(:puts).with("Winner is player anna")
 
-      tic_tac_toe.start
+      TicTacToe.new(io(jeff, anna)).start
+
+      io.outputs.should include "Winner is player anna"
     end
 
     it "shows the winner when one player takes the diagonal" do
       jeff = ["0,0", "0,1", "2,1"]
       anna = ["2,0", "1,1", "0,2"]
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.stub(:puts)
-      io.should_receive(:puts).with("Winner is player anna")
 
-      tic_tac_toe.start
+      TicTacToe.new(io(jeff, anna)).start
+
+      io.outputs.should include "Winner is player anna"
     end
 
     it "shows the winner for more sophisticated diagonals" do
       jeff = ["0,0", "0,2", "1,1", "2,0"]
       anna = ["0,1", "2,1", "2,2"]
 
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.stub(:puts)
-      io.should_receive(:puts).with("Winner is player jeff")
+      TicTacToe.new(io(jeff, anna)).start
 
-      tic_tac_toe.start
+      io.outputs.should include "Winner is player jeff"
     end
 
     it "doesn't allow players to do a move that belongs to another player" do
       jeff = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       anna = ["0,0", "1,1", "2,0", "0,1", "2,2"]
-      io.stub(:puts)
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.should_receive(:puts).with("That square has been already taken, please do another movement")
-      io.should_receive(:puts).with("No winners this time!")
 
-      tic_tac_toe.start
+      TicTacToe.new(io(jeff, anna)).start
+
+      io.outputs.should include "That square has been already taken, please do another movement", "No winners this time!"
     end
 
     it "ends the game if there are no more squares to take" do
       jeff = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       anna = ["1,1", "2,0", "0,1", "2,2"]
-      io.stub(:gets).and_return("jeff", "anna", *moves(jeff, anna))
-      io.stub(:puts)
-      io.should_receive(:puts).with("No winners this time!")
-      io.should_not_receive(:puts).with("Winner is player a")
-      io.should_not_receive(:puts).with("Winner is player b")
 
-      tic_tac_toe.start
+      TicTacToe.new(io(jeff, anna)).start
+
+      io.outputs.should include "No winners this time!"
     end
   end
 end
