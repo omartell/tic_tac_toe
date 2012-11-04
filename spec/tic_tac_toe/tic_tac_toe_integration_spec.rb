@@ -6,25 +6,23 @@ module TicTacToe
     let(:io){ double(:io) }
     let(:tic_tac_toe){ TicTacToe.new(io) }
 
-    def ask_player(player)
-      tic_tac_toe.play(player.to_s)
-    end
-
     it "asks who's playing" do
-      io.stub(:puts)
-      io.should_receive(:puts).with("Who's the first player?")
-      io.stub(gets: "oliver")
-      io.should_receive(:puts).with("Who's the second player?")
-      io.stub(gets: "anna")
+      a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
+      b = ["1,1", "2,0", "0,1", "2,2"]
 
-      tic_tac_toe.set_players
+      io.stub(:puts)
+      io.stub(:gets).and_return("oliver", "ana", a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
+      io.should_receive(:puts).with("Who's the first player?")
+      io.should_receive(:puts).with("Who's the second player?")
+
+      tic_tac_toe.start
     end
 
     it "asks for player's b move after player a" do
       a = ["0,0", "1,0", "0,2", "2,1", "1,2"]
       b = ["1,1", "2,0", "0,1", "2,2"]
 
-      io.stub(:gets).and_return("a","b",a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
+      io.stub(:gets).and_return("a","b", a[0], b[0], a[1], b[1], a[2], b[2], a[3], b[3], a[4])
       args = []
       io.stub(:puts) do |arg|
         args << arg
