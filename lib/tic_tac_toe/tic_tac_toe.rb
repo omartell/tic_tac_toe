@@ -34,7 +34,7 @@ module TicTacToe
     end
 
     def play(player)
-      @io.puts("Player #{player}:")
+      @io.puts("#{player}:")
       move  = parse_input(@io.gets)
       state = @engine.move(player, move)
 
@@ -43,7 +43,7 @@ module TicTacToe
         play(player)
       end
       if state == :winner
-        @io.puts ("Winner is player #{player.to_s}")
+        @io.puts ("#{player.capitalize} has won!")
       end
       if state == :no_winner
         @io.puts("No winners this time!")

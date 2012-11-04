@@ -35,16 +35,16 @@ module TicTacToe
 
       TicTacToe.new(io(jeff, anna)).start
 
-      io.outputs.should include "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:", "Player anna:", "Player jeff:"
+      io.outputs.should include "jeff:", "anna:", "jeff:", "anna:", "jeff:", "anna:", "jeff:", "anna:", "jeff:"
     end
 
-    it "shows the winner when one player takes the whole row" do
+    it "shows the winner when one takes the whole row" do
       jeff = ["0,0", "1,0", "2,0"]
       anna = ["0,1", "1,1"]
 
       TicTacToe.new(io(jeff, anna)).start
 
-      io.outputs.should include "Winner is player jeff"
+      io.outputs.should include "Jeff has won!"
     end
 
     it "shows the winner when one player takes the whole column" do
@@ -53,7 +53,7 @@ module TicTacToe
 
       TicTacToe.new(io(jeff, anna)).start
 
-      io.outputs.should include "Winner is player anna"
+      io.outputs.should include "Anna has won!"
     end
 
     it "shows the winner when one player takes the diagonal" do
@@ -62,7 +62,7 @@ module TicTacToe
 
       TicTacToe.new(io(jeff, anna)).start
 
-      io.outputs.should include "Winner is player anna"
+      io.outputs.should include "Anna has won!"
     end
 
     it "shows the winner for more sophisticated diagonals" do
@@ -71,7 +71,7 @@ module TicTacToe
 
       TicTacToe.new(io(jeff, anna)).start
 
-      io.outputs.should include "Winner is player jeff"
+      io.outputs.should include "Jeff has won!"
     end
 
     it "doesn't allow players to do a move that belongs to another player" do
